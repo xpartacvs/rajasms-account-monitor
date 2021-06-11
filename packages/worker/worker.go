@@ -4,6 +4,7 @@ import (
 	"rajasms-account-monitor/packages/config"
 	"rajasms-account-monitor/packages/logger"
 	"rajasms-account-monitor/packages/webhook"
+	"regexp"
 	"sync"
 	"time"
 
@@ -22,8 +23,15 @@ func Start() error {
 		return err
 	}
 
+	schedule := config.Get().Schedule()
+	rgxCron := regexp.MustCompile(`(@(annually|yearly|monthly|weekly|daily|hourly|reboot))|(@every (\d+(ns|us|µs|ms|s|m|h))+)|((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})`)
+	if !rgxCron.MatchString(schedule) {
+		schedule = "0 0 * * *"
+		logger.Log().Warn().Msg("Invalid schedule format. Retain to default value")
+	}
+
 	s := gocron.NewScheduler(loc)
-	_, err = s.Cron(config.Get().RajaSMSApiKey()).Do(checkAccount)
+	_, err = s.Cron(schedule).Do(checkAccount)
 	if err != nil {
 		return err
 	}

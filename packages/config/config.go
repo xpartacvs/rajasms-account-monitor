@@ -10,6 +10,7 @@ import (
 )
 
 type config struct {
+	schedule   string
 	logMode    zerolog.Level
 	rjsApiUrl  string
 	rjsApiKey  string
@@ -31,12 +32,17 @@ type Config interface {
 	DishookBotName() string
 	DishookBotAvatarURL() string
 	DishookBotMessage() string
+	Schedule() string
 }
 
 var (
 	cfg  Config
 	once sync.Once
 )
+
+func (c config) Schedule() string {
+	return c.schedule
+}
 
 func (c config) ZerologLevel() zerolog.Level {
 	return c.logMode
