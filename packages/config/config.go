@@ -134,6 +134,7 @@ func read() Config {
 	}
 
 	return &config{
+		schedule:   strings.TrimSpace(fang.GetString("schedule")),
 		logMode:    logmode,
 		rjsApiUrl:  strings.TrimSpace(fang.GetString("rajasms.api.url")),
 		rjsApiKey:  strings.TrimSpace(fang.GetString("rajasms.api.key")),
