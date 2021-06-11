@@ -45,7 +45,7 @@ func getClient() rajasms.Client {
 func checkAccount() error {
 	i, err := getClient().GetInquiry()
 	if err != nil {
-		logger.Log().Error().Msg(err.Error())
+		logger.Log().Err(err).Msg("Cannot get account inquiry result")
 		return err
 	}
 
@@ -56,7 +56,7 @@ func checkAccount() error {
 			config.Get().RajaSMSGraceDays(),
 			i.GetExpiry(),
 		).Send(config.Get().DishookURL()); err != nil {
-			logger.Log().Error().Msg(err.Error())
+			logger.Log().Err(err).Msg("Error while sending alert to discord channel")
 		}
 	}
 
