@@ -23,7 +23,7 @@ docker container run \
     rajasms-account-monitor:latest
 ```
 
-> **PENTING**: Minimal ada 3 (tiga) environment variable yang harus di-_assign_ yaitu `DISCORD_WEBHOOKURL`, `RAJASMS_API_URL`, dan `RAJASMS_API_KEY`. Lebih lengkapnya lihat bahian [konfigurasi](#konfigurasi)
+> **PENTING**: Minimal ada 3 (tiga) environment variable yang harus di-_assign_ yaitu `DISCORD_WEBHOOKURL`, `RAJASMS_API_URL`, dan `RAJASMS_API_KEY`. Lebih lengkapnya lihat bagian [konfigurasi](#konfigurasi)
 
 ## Konfigurasi
 
