@@ -2,6 +2,36 @@
 
 Monitor status saldo dan tanggal kedaluarsa akun RajaSMS
 
+## Cara Pakai
+
+Yang paling enak ya pakai docker. Step-stepnya:
+
+### Clone Repository Dulu
+
+```bash
+git clone git@github.com:xpartacvs/rajasms-account-monitor.git
+cd rajasms-account-monitor
+```
+
+### Build Image Docker-nya
+
+```bash
+docker image build -t rajasms-account-monitor:latest .
+```
+
+### Run Container-nya
+
+```bash
+docker container run \
+    -it \
+    -e DISCORD_WEBHOOKURL=... \
+    -e RAJASMS_API_URL=... \
+    -e RAJASMS_API_KEY=... \
+    rajasms-account-monitor:latest
+```
+
+> **PENTING**: Minimal ada 3 (tiga) environment variable yang harus di-_assign_ yaitu `DISCORD_WEBHOOKURL`, `RAJASMS_API_URL`, dan `RAJASMS_API_KEY`. Lebih lengkapnya lihat bahian [konfigurasi](#konfigurasi)
+
 ## Konfigurasi
 
 Konfigurasi aplikasi ini dapat dilakukan dengan menggunakan environment variables.
@@ -18,3 +48,19 @@ Konfigurasi aplikasi ini dapat dilakukan dengan menggunakan environment variable
 | `RAJASMS_LOWBALANCE`    | `integer` |         | `100000`                | Jika saldo <= nilai variabel ini maka alert via discord webhook akan terpicu.                                                   |
 | `RAJASMS_GRACEPERIOD`   | `integer` |         | `7`                     | Jumlah hari menjelang tanggal kedaluarsa akun. Alert akan terpicu jika tanggal sekarang >= (tanggal kedaluarsa - variabel ini). |
 | `SCHEDULE`              | `string`  |         | `0 0 * * *`             | Jadwal pemeriksaan status akun RajaSMS (dalam format CRON).                                                                     |
+
+## Lisensi
+
+MIT kok. Insya Allah _Open Source_ selamanya.
+
+## Cara Kontribusi
+
+- Silahkan PR saja.
+- **WAJIB** menggunakan bahasa Indonesia jika ingin mengubah atau menambahkan info di `README.md`.
+- Jika ingin ditiru, mohon pertimbangkan ini: _ATM lebih baik dari ATP_  (**ATM**=Amati Tiru Modifikasi, **ATP**=Amati Tiru Plek-plek)
+- Oh iya aplikasi ini dibuat dengan bahasa pemrograman _GO_ ya.
+
+## Minta tolong dibantu
+
+- [ISSUE #1](https://github.com/xpartacvs/rajasms-account-monitor/issues/1) Ada **BUG** saat call API ke server RajaSMS. API di-_call_ lebih dari satu kali sehingga kena `rate-limit` _(meskipun tidak bikin container exit)_.
+- Saat ini alertnya hanya ke discord. Monggo yang mau bantu tambah fitur slack, sms, email, dll `you are very welcome`.
