@@ -4,24 +4,17 @@ Monitor status saldo dan tanggal kedaluarsa akun RajaSMS
 
 ## Cara Pakai
 
-Yang paling enak ya pakai docker. Step-stepnya:
-
-### Clone Repository Dulu
+Yang paling enak ya pakai docker. Berikut ini step-stepnya:
 
 ```bash
+# Clone repository dulu dan masuk ke directorynya
 git clone git@github.com:xpartacvs/rajasms-account-monitor.git
 cd rajasms-account-monitor
-```
 
-### Build Image Docker-nya
-
-```bash
+# Build image docker-nya
 docker image build -t rajasms-account-monitor:latest .
-```
 
-### Run Container-nya
-
-```bash
+# Run container-nya
 docker container run \
     -it \
     -e DISCORD_WEBHOOKURL=... \
