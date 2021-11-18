@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-type config struct {
+type Config struct {
 	schedule   string
 	logMode    zerolog.Level
 	rjsApiUrl  string
@@ -22,72 +22,59 @@ type config struct {
 	disBotMsg  string
 }
 
-type Config interface {
-	ZerologLevel() zerolog.Level
-	RajaSMSApiURL() string
-	RajaSMSApiKey() string
-	RajaSMSLowBalance() uint
-	RajaSMSGraceDays() uint
-	DishookURL() string
-	DishookBotName() string
-	DishookBotAvatarURL() string
-	DishookBotMessage() string
-	Schedule() string
-}
-
 var (
-	cfg  Config
+	cfg  *Config
 	once sync.Once
 )
 
-func (c config) Schedule() string {
+func (c Config) Schedule() string {
 	return c.schedule
 }
 
-func (c config) ZerologLevel() zerolog.Level {
+func (c Config) ZerologLevel() zerolog.Level {
 	return c.logMode
 }
 
-func (c config) RajaSMSApiURL() string {
+func (c Config) RajaSMSApiURL() string {
 	return c.rjsApiUrl
 }
 
-func (c config) RajaSMSApiKey() string {
+func (c Config) RajaSMSApiKey() string {
 	return c.rjsApiKey
 }
 
-func (c config) RajaSMSLowBalance() uint {
+func (c Config) RajaSMSLowBalance() uint {
 	return c.rjsBalance
 }
 
-func (c config) RajaSMSGraceDays() uint {
+func (c Config) RajaSMSGraceDays() uint {
 	return c.rjsPeriod
 }
 
-func (c config) DishookURL() string {
+func (c Config) DishookURL() string {
 	return c.disHook
 }
 
-func (c config) DishookBotName() string {
+func (c Config) DishookBotName() string {
 	return c.disBotName
 }
 
-func (c config) DishookBotAvatarURL() string {
+func (c Config) DishookBotAvatarURL() string {
 	return c.disBotAva
 }
 
-func (c config) DishookBotMessage() string {
+func (c Config) DishookBotMessage() string {
 	return c.disBotMsg
 }
 
-func Get() Config {
+func Get() *Config {
 	once.Do(func() {
 		cfg = read()
 	})
 	return cfg
 }
 
-func read() Config {
+func read() *Config {
 	fang := viper.New()
 
 	fang.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
@@ -133,7 +120,7 @@ func read() Config {
 		logmode = zerolog.Disabled
 	}
 
-	return &config{
+	return &Config{
 		schedule:   strings.TrimSpace(fang.GetString("schedule")),
 		logMode:    logmode,
 		rjsApiUrl:  strings.TrimSpace(fang.GetString("rajasms.api.url")),
