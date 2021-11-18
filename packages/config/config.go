@@ -14,7 +14,7 @@ type Config struct {
 	logMode    zerolog.Level
 	rjsApiUrl  string
 	rjsApiKey  string
-	rjsBalance uint
+	rjsBalance uint64
 	rjsPeriod  uint
 	disHook    string
 	disBotName string
@@ -43,7 +43,7 @@ func (c Config) RajaSMSApiKey() string {
 	return c.rjsApiKey
 }
 
-func (c Config) RajaSMSLowBalance() uint {
+func (c Config) RajaSMSLowBalance() uint64 {
 	return c.rjsBalance
 }
 
@@ -91,7 +91,7 @@ func read() *Config {
 
 	_ = fang.ReadInConfig()
 
-	balance := fang.GetUint("rajasms.lowbalance")
+	var balance uint64 = uint64(fang.GetUint("rajasms.lowbalance"))
 	if balance == 0 {
 		balance = 100000
 	}

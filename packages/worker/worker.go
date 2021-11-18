@@ -13,7 +13,7 @@ import (
 
 var (
 	once   sync.Once
-	client rajasms.Client
+	client *rajasms.Client
 )
 
 func Start() error {
@@ -32,29 +32,30 @@ func Start() error {
 	return nil
 }
 
-func getClient() rajasms.Client {
+func getClient() *rajasms.Client {
 	once.Do(func() {
-		client = rajasms.NewClient(
-			config.Get().RajaSMSApiURL(),
-			config.Get().RajaSMSApiKey(),
-		)
+		var err error
+		client, err = rajasms.NewCient(config.Get().RajaSMSApiURL(), config.Get().RajaSMSApiKey())
+		if err != nil {
+			logger.Log().Fatal().Msg("Unable to create RajaSMS Client")
+		}
 	})
 	return client
 }
 
 func checkAccount() error {
-	i, err := getClient().GetInquiry()
+	i, err := getClient().AccountInfo()
 	if err != nil {
 		logger.Log().Err(err).Msg("Cannot get account inquiry result")
 		return err
 	}
 
-	if (i.GetBalance() <= config.Get().RajaSMSLowBalance()) || (uint(time.Until(i.GetExpiry()).Hours()/24) <= config.Get().RajaSMSGraceDays()) {
+	if (i.Balance <= config.Get().RajaSMSLowBalance()) || (uint(time.Until(i.Expiry).Hours()/24) <= config.Get().RajaSMSGraceDays()) {
 		if err := webhook.GetInstance().AddReminder(
-			config.Get().RajaSMSLowBalance(),
-			i.GetBalance(),
+			uint(config.Get().RajaSMSLowBalance()),
+			uint(i.Balance),
 			config.Get().RajaSMSGraceDays(),
-			i.GetExpiry(),
+			i.Expiry,
 		).Send(config.Get().DishookURL()); err != nil {
 			logger.Log().Err(err).Msg("Error while sending alert to discord channel")
 		}

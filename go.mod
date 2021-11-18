@@ -8,5 +8,5 @@ require (
 	github.com/rs/zerolog v1.22.0
 	github.com/spf13/viper v1.7.1
 	github.com/xpartacvs/go-dishook v1.3.1
-	github.com/xpartacvs/go-rajasms v1.0.1
+	github.com/xpartacvs/go-rajasms v1.1.0
 )
