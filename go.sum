@@ -190,8 +190,8 @@ github.com/subosito/gotenv v1.2.0 h1:Slr1R9HxAlEKefgq5jn9U+DnETlIUa6HfgEzj0g5d7s
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
-github.com/xpartacvs/go-dishook v1.1.1 h1:R3Do5IuYKPFI0+RGwxUwmBQnAho7Tav1d4R64gJo7Mk=
-github.com/xpartacvs/go-dishook v1.1.1/go.mod h1:5cmgEfd5w44iCbPc3QpPsMRSx6yjONzUSvXhhekKwcw=
+github.com/xpartacvs/go-dishook v1.3.1 h1:JfZt7z/6LR6VbLu79GqG7zUfojrHNkRNxW5LMFieaL8=
+github.com/xpartacvs/go-dishook v1.3.1/go.mod h1:Q8dyGFpjyv/wErZOdGrHBPa0P9nE0ishmGs5D1AlZcs=
 github.com/xpartacvs/go-rajasms v1.0.1 h1:+uvhTQU9qE+MM9Y/Nz1RSCnUei5RWJ7FJmREdq0oyBM=
 github.com/xpartacvs/go-rajasms v1.0.1/go.mod h1:SrR7zRz5BhjqfGMcowZK3LluMykWOakMNcoPaCcZJ4k=
 github.com/xpartacvs/go-waktu v1.0.0 h1:5n6VSiL9dOth8sEy0I/4eFtuKNYwdgGFXHkOg7WMo4k=

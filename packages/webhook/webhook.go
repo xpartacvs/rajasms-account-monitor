@@ -2,10 +2,10 @@ package webhook
 
 import (
 	"errors"
-	"fmt"
 	"rajasms-account-monitor/packages/config"
 	"rajasms-account-monitor/packages/logger"
 	"regexp"
+	"strconv"
 	"sync"
 	"time"
 
@@ -13,21 +13,16 @@ import (
 	"github.com/xpartacvs/go-dishook"
 )
 
-type webhook dishook.Payload
-
-type Webhook interface {
-	AddReminder(margin, balance, grace uint, expiry time.Time) Webhook
-	Send(url string) error
-}
+type Webhook dishook.Payload
 
 var (
-	w    Webhook
+	w    *Webhook
 	once sync.Once
 )
 
-func GetInstance() Webhook {
+func GetInstance() *Webhook {
 	once.Do(func() {
-		w = &webhook{
+		w = &Webhook{
 			Username:  config.Get().DishookBotName(),
 			AvatarUrl: dishook.Url(config.Get().DishookBotAvatarURL()),
 			Content:   config.Get().DishookBotMessage(),
@@ -36,7 +31,7 @@ func GetInstance() Webhook {
 	return w
 }
 
-func (p *webhook) AddReminder(margin, balance, grace uint, expiry time.Time) Webhook {
+func (p *Webhook) AddReminder(margin, balance, grace uint, expiry time.Time) *Webhook {
 	ac := accounting.Accounting{
 		Symbol:   "Rp",
 		Thousand: ".",
@@ -47,7 +42,7 @@ func (p *webhook) AddReminder(margin, balance, grace uint, expiry time.Time) Web
 	moneyMargin := ac.FormatMoney(margin)
 	remainingDays := uint(time.Until(expiry).Hours() / 24)
 	title := "Saldo Akun Minim"
-	desc := fmt.Sprintf("Saldo kurang dari %s Segera lakukan topup atau SMS tidak bisa terkirim.", moneyMargin)
+	desc := "Saldo kurang dari " + moneyMargin + "Segera lakukan topup atau SMS tidak bisa terkirim."
 
 	if remainingDays <= grace {
 		title = "Mendekati Tanggal Kedaluarsa"
@@ -55,7 +50,7 @@ func (p *webhook) AddReminder(margin, balance, grace uint, expiry time.Time) Web
 	}
 
 	embed := dishook.Embed{
-		Color:       14327864,
+		Color:       dishook.ColorWarn,
 		Url:         "https://raja-sms.com/topupsaldo/",
 		Title:       title,
 		Description: desc,
@@ -72,7 +67,7 @@ func (p *webhook) AddReminder(margin, balance, grace uint, expiry time.Time) Web
 			},
 			{
 				Name:   "Saldo Hangus Dalam",
-				Value:  fmt.Sprintf("%d hari", remainingDays),
+				Value:  strconv.FormatUint(uint64(remainingDays), 10) + " hari",
 				Inline: true,
 			},
 		},
@@ -84,7 +79,7 @@ func (p *webhook) AddReminder(margin, balance, grace uint, expiry time.Time) Web
 	return p
 }
 
-func (p *webhook) Send(url string) error {
+func (p *Webhook) Send(url string) error {
 	if p.Embeds == nil {
 		logger.Log().Warn().Msg("Webhook has nothing to send")
 		return nil
